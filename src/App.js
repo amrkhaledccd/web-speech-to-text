@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Input, List, Typography } from "antd";
+import { Form, Row, Col, Input, Button, Icon, List, Typography, DatePicker } from "antd";
 import "antd/dist/antd.css";
 import "./App.css";
 
@@ -9,24 +9,21 @@ recognition.continous = true;
 recognition.interimResults = true;
 recognition.lang = "en-US";
 
+const background = "https://i.pinimg.com/originals/49/2d/3d/492d3db4b0fad70c5b1033e55e3d9577.jpg";
+
 class App extends Component {
   state = {
-    todos: [],
-    todoId: 0,
     text: "",
     listening: false
   };
 
   toggleListen = () => {
-    let newTodos = this.state.todos;
 
-    if (this.state.text !== "") {
-      newTodos = this.addTodo(this.state.text);
-    }
+    // if (this.state.text !== "") {
+    //   newTodos = this.addTodo(this.state.text);
+    // }
 
     this.setState({
-      todos: newTodos,
-      todoId: this.state.todoId + 1,
       listening: !this.state.listening,
       text: ""
     });
@@ -77,25 +74,6 @@ class App extends Component {
     };
   };
 
-  handleClick = () => {
-    if (this.state.text !== "") {
-      this.addTodo(this.state.text);
-      this.setState({ text: "" });
-    }
-  };
-
-  handleInputChange = event => {
-    this.setState({ text: event.target.value });
-  };
-
-  addTodo = text => {
-    const todos = this.state.todos;
-    const todo = { id: this.state.todoId + 1, text: text, completed: false };
-    const newTodos = [...todos, todo];
-
-    return newTodos;
-  };
-
   render() {
     let circleBtnType = "";
 
@@ -104,32 +82,44 @@ class App extends Component {
     }
 
     return (
-      <div className="app">
-        <Input
-          placeholder="Say something"
-          className="input"
-          value={this.state.text}
-          onChange={this.handleInputChange}
-        />
-        <Button type="primary" onClick={this.handleClick} className="btn">
-          Primary
-        </Button>
-        <Button
-          type={circleBtnType}
-          shape="circle"
-          icon="phone"
-          onClick={this.toggleListen}
-        />
-        <List
-          dataSource={this.state.todos}
-          renderItem={todo => (
-            <List.Item>
-              <Typography.Text mark>[ITEM]</Typography.Text> {todo.text}
-            </List.Item>
-          )}
-        />
-      </div>
-    );
+        <div className="container" style={{backgroundImage: `url(${background})`}}>
+        <Form className="ant-advanced-search-form" onSubmit={this.handleSearch}>
+          <Row gutter={24}>
+            <Col span={7} > 
+              <Input
+                  size="large"
+                  className="input"
+                  placeholder="From: City, Station Or Airport"
+                  prefix={<Icon type="global" style={{ color: 'rgba(0,0,0,.25)' }} />}/>
+            </Col>
+            <Col span={7}> 
+             <Input
+                  className="input"
+                  size="large"
+                  placeholder="To: City, Station Or Airport"
+                  prefix={<Icon type="global" style={{ color: 'rgba(0,0,0,.25)' }} />}/>
+            </Col>
+            <Col span={4}> 
+                  <DatePicker className="input" size="large" />
+            </Col>
+            <Col span={4}> 
+                <Button className="btn" type="danger" size="large">Search</Button>
+            </Col>
+            <Col span={2}> 
+              <Button
+                className="circle-btn"
+                type={circleBtnType}
+                shape="circle"
+                icon="audio"
+                onClick={this.toggleListen}
+              />
+            </Col>
+          </Row>
+
+        </Form>
+        </div>
+        
+      );
   }
 }
 
