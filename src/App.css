@@ -1,0 +1,13 @@
+.app {
+  width: 500px;
+  padding: 50px;
+}
+
+.input {
+  width: 250px;
+  margin-right: 10px;
+}
+
+.btn {
+  margin-right: 5px;
+}
